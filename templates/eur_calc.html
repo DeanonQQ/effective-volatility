@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Site</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <style>
+        body {font-size: 16px;text-decoration: none;font-family: Arial, Helvetica, sans-serif;}
+    </style>
+    <div class="container">
+        <a href="/"><button type="button" class="btn btn-primary">Назад</button> </a>
+        <h1>Моделирование волатильности курса евро по отношению к рублю. </h1>
+        <div class="alert alert-primary" role="alert">
+            
+          </div>
+            <form action="" method="post">
+                <div class="form-group">
+                    {% csrf_token %}
+                <!-- <label for="your_name">Сумма вклада (руб.): </label>
+                <input id="q" type="text" name="q" value="{{ q }}" class="form-control">
+                <label for="your_name">Процентная ставка </label>
+                <input id="w" type="text" name="w" value="{{ w }}" class="form-control">
+                <label for="your_name">Срок в годах: </label>
+                <input id="e" type="text" name="e" value="{{ e }}" class="form-control"> -->
+                <div class="form-group row mt-4">
+                    <label for="example-datetime-local-input" class="col-2 col-form-label">Начало</label>
+                    <div class="col-10">
+                      <input id="f" name="f" value="{{ f }}" class="form-control" type="datetime-local" value="2021-08-19" id="example-datetime-local-input">
+                    </div>
+                  </div>
+                  <div class="form-group row mt-4">
+                    <label for="example-datetime-local-input" class="col-2 col-form-label">Конец</label>
+                    <div class="col-10">
+                      <input id="d" name="d" value="{{ d }}" class="form-control" type="datetime-local" value="2021-08-19" id="example-datetime-local-input">
+                    </div>
+                  </div>
+                </div>
+                <input type="submit" value="OK" class="btn btn-primary mb-2 mt-4">
+                
+            </form>
+            <div class="row">
+              <div class="col-sm"><div id="columnchart_values" style="width: 100%; height: 300px;"></div> <br> <br> </div>
+          </div>
+          {% for i in re %}
+          <div class="alert alert-primary" role="alert">
+              {{ forloop.counter }} Год - {{i}} руб. <br>
+            </div>
+          {% endfor %}
+          <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+          <script type="text/javascript">
+          google.load('visualization', '1.0', {'packages':['corechart']});
+          google.setOnLoadCallback(drawChart);
+          function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Date');
+            data.addColumn('number', 'Value');
+            data.addRows( {{ up|safe }} );
+
+          var chart = new google.visualization.LineChart(document.getElementById('columnchart_values'));
+          chart.draw(data, {width: 1100, height: 240, title: "Numbers"});
+          }
+          </script>
+
+
+          <!-- <script type="text/javascript">
+              google.charts.load("current", {packages:['corechart']});
+              google.charts.setOnLoadCallback(drawChart);
+              function drawChart() {
+                var data = google.visualization.arrayToDataTable({{up|safe}});
+                var view = new google.visualization.DataView(data);
+                view.setColumns([0, 1,
+                                 { calc: "stringify",
+                                   sourceColumn: 1,
+                                   type: "string",
+                                   role: "annotation" },
+                                 2]);
+                var options = {
+                  title: "График динамики начислений по годам:",
+                  width: 1200,
+                  height: 400,
+                  bar: {groupWidth: "95%"},
+                  legend: { position: "none" },
+                };
+                var chart = new google.visualization.LineChart(document.getElementById("columnchart_values"));
+                chart.draw(view, options);
+            }
+
+            </script> -->
+
+            <br> <br> 
+            <div class="alert alert-primary" role="alert">
+              Предположительный курс на завтра: {{pred}}
+            </div>
+            <div class="row alert alert-primary">
+                <div class="col-sm">
+                    начало {{dat.0}} 
+                </div>
+                <div class="col-sm">
+                    Конец {{dat.1}} 
+                </div>
+            </div>
+            <div class="alert alert-primary" role="alert">
+                Волатильность: {{diff}}
+              </div>
+              <div class="col-sm"><div id="columnchart_values1" style="width: 100%; height: 300px;"></div> <br> <br> </div>
+              <!-- <script type="text/javascript">
+                google.charts.load("current", {packages:['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                  var data = google.visualization.arrayToDataTable([
+                    ["Data", "Курс", { role: "style" } ],
+                    {% for i in cur %}
+                        [{{forloop.counter}}, {{i}}, "blue"],
+  
+                    {% endfor %}
+                  ]);
+                  var view = new google.visualization.DataView(data);
+                  view.setColumns([0, 1,
+                                   { calc: "stringify",
+                                     sourceColumn: 1,
+                                     type: "string",
+                                     role: "annotation" },
+                                   2]);
+                  var options = {
+                    title: "График динамики начислений по годам:",
+                    width: 1200,
+                    height: 400,
+                    bar: {groupWidth: "95%"},
+                    legend: { position: "none" },
+                  };
+                  var chart = new google.visualization.LineChart(document.getElementById("columnchart_values1"));
+                  chart.draw(view, options);
+              }
+              </script> -->
+              <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+          <script type="text/javascript">
+          google.load('visualization', '1.0', {'packages':['corechart']});
+          google.setOnLoadCallback(drawChart);
+          function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Date');
+            data.addColumn('number', 'Value');
+            data.addRows( {{ cur|safe }} );
+
+          var chart = new google.visualization.LineChart(document.getElementById('columnchart_values1'));
+          chart.draw(data, {width: 1100, height: 240, title: "Numbers"});
+          }
+          </script>
+
+            {% for i in re %}
+            <div class="alert alert-primary" role="alert">
+                {{ forloop.counter }} Год - {{i}} руб. <br>
+              </div>
+            {% endfor %}
+            
+              
+    </div>
+</body>
+</html>
